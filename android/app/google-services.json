@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "125261117909",
+    "project_id": "pethotelkub",
+    "storage_bucket": "pethotelkub.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125261117909:android:27bb2ea2e29c1dc00fa55c",
+        "android_client_info": {
+          "package_name": "com.example.petshop_applications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHIIeCQyZFLkUqFTk6MLLspmSiXaYS4II"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
