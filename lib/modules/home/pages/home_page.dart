@@ -16,13 +16,13 @@ class TabMenuPage extends StatefulWidget {
 }
 
 class _TabMenuPageState extends State<TabMenuPage> {
-  late String _username;
+  // late String _username;
   late String _avatarUrl;
 
   @override
   void initState() {
     super.initState();
-    _username = widget.username;
+    // _username = widget.username;
     _avatarUrl = widget.avatarUrl;
   }
 

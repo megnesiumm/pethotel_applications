@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:petshop_applications/core/widgets/custom_form_field.dart';
 import 'package:petshop_applications/modules/home/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _navigtorkey = GlobalKey<NavigatorState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   Future<void> _login() async {
     final url = Uri.parse('https://www.melivecode.com/api/login');
@@ -99,219 +101,219 @@ class _LoginPageState extends State<LoginPage> {
       onGenerateRoute: (route) {
         return MaterialPageRoute(
           builder:
-              (context) => GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  body: Container(
-                    decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/backgroundlogin.png'),
-                        fit: BoxFit.cover,
-                        opacity: 0.6,
+              (context) => Theme(
+                data: Theme.of(context).copyWith(
+                  textTheme: Theme.of(
+                    context,
+                  ).textTheme.apply(fontFamily: 'Noto Sans'),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  child: Scaffold(
+                    resizeToAvoidBottomInset: false,
+                    body: Container(
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage(
+                            'assets/images/backgroundlogin.png',
+                          ),
+                          fit: BoxFit.cover,
+                          opacity: 0.6,
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 70, 24, 62),
-                        child: Form(
-                          key: _formKey,
-                          child: Container(
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(40),
-                              color: Colors.white.withOpacity(0.6),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(30.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/Logocat.png',
-                                    width: 150,
-                                    height: 150,
-                                  ),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: _usernameController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Username',
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          borderSide: const BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          borderSide: const BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your username';
-                                        }
-                                        return null;
-                                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 70, 24, 62),
+                          child: Form(
+                            key: _formKey,
+                            child: Container(
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: Colors.white.withOpacity(0.6),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(30.0),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/Logocat.png',
+                                      width: 150,
+                                      height: 150,
                                     ),
-                                  ),
-                                  SizedBox(height: 28),
-                                  SizedBox(
-                                    height: 40,
-                                    child: TextFormField(
-                                      controller: _passwordController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          borderSide: const BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          borderSide: const BorderSide(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter your password';
-                                        }
-                                        return null;
-                                      },
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('USERNAME'),
                                     ),
-                                  ),
-                                  SizedBox(height: 70),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: Color(0xFFFFAB80E3),
-                                      minimumSize: Size(300, 35),
-                                    ),
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        _login();
-                                      }
-                                    },
-                                    child: const Text('LOG IN'),
-                                  ),
-                                  SizedBox(height: 70),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                          thickness: 1,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0,
-                                        ),
-                                        child: Text(
-                                          'OR',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                          thickness: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 64),
+                                    SizedBox(height: 4),
+                                    SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        controller: _usernameController,
 
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          signInWithFacebook();
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your username';
+                                          }
+                                          return null;
                                         },
-                                        child: SvgPicture.asset(
-                                          'assets/icons/facebook.svg',
-                                          width: 40,
-                                          height: 40,
-                                        ),
+                                        hintText: 'Username',
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          signInWithGoogle();
+                                    ),
+                                    SizedBox(height: 28),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('PASSWORD'),
+                                    ),
+                                    SizedBox(height: 4),
+                                    SizedBox(
+                                      height: 40,
+                                      child: CustomFormField(
+                                        controller: _passwordController,
+                                        hintText: 'password',
+                                        obscureText: _obscurePassword,
+                                        suffixIcon:
+                                            _obscurePassword
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                        onSuffixIconPressed: () {
+                                          setState(() {
+                                            _obscurePassword =
+                                                !_obscurePassword;
+                                          });
                                         },
-                                        child: SvgPicture.asset(
-                                          'assets/icons/google.svg',
-                                          width: 40,
-                                          height: 40,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          print('Line icon tapped');
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a password';
+                                          }
+                                          return null;
                                         },
-                                        child: SvgPicture.asset(
-                                          'assets/icons/line.svg',
-                                          width: 40,
-                                          height: 40,
-                                        ),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 50),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Are you new to ZZZ Hotel?',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                        ),
+                                    ),
+                                    SizedBox(height: 70),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Color(0xFFFFAB80E3),
+                                        minimumSize: Size(300, 35),
                                       ),
-                                      SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) => RegisterPage(),
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'REGISTER',
-                                          style: TextStyle(
-                                            color: Color(0xFF9747FF),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            decoration:
-                                                TextDecoration.underline,
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          _login();
+                                        }
+                                      },
+                                      child: const Text(
+                                        'LOG IN',
+                                        style: TextStyle(),
+                                      ),
+                                    ),
+                                    SizedBox(height: 70),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Divider(
+                                            color: Color(0xFFFF8D8D8D),
+                                            thickness: 1,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                          ),
+                                          child: Text(
+                                            'OR',
+                                            style: TextStyle(
+                                              color: Color(0xFFFF666666),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Divider(
+                                            color: Color(0xFFFF8D8D8D),
+                                            thickness: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 64),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            signInWithFacebook();
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/facebook.svg',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            signInWithGoogle();
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/google.svg',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            print('Line icon tapped');
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/line.svg',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 50),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Are you new to ZZZ Hotel?',
+                                          style: TextStyle(
+                                            color: Color(0xFFFF505050),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (context) => RegisterPage(),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            'REGISTER',
+                                            style: TextStyle(
+                                              color: Color(0xFF9747FF),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
