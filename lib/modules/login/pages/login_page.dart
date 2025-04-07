@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/custom_form_field.dart';
 import 'package:petshop_applications/modules/home/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -193,22 +194,15 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     SizedBox(height: 70),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Color(0xFFFFAB80E3),
-                                        minimumSize: Size(300, 35),
-                                      ),
+                                    CustomElevatedButton(
+                                      text: 'LOG IN',
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           _login();
                                         }
                                       },
-                                      child: const Text(
-                                        'LOG IN',
-                                        style: TextStyle(),
-                                      ),
                                     ),
+
                                     SizedBox(height: 70),
                                     Row(
                                       mainAxisAlignment:

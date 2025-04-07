@@ -30,7 +30,8 @@ class CustomFormField extends StatelessWidget {
         inputFormatters: inputFormatters,
         textAlign: TextAlign.left,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          contentPadding: EdgeInsets.only(left: 14, top: 8, bottom: 8),
+
           hintText: hintText,
           hintStyle: TextStyle(color: Color(0xFFFF989898), fontSize: 14),
 

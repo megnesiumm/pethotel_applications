@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/custom_form_field.dart';
 import 'package:petshop_applications/modules/login/pages/login_page.dart';
 
@@ -262,16 +263,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(height: 30),
 
                           // Register button
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              backgroundColor: Color(0xFFFFAB80E3),
-                              minimumSize: Size(300, 35),
-                            ),
-                            onPressed: () {
-                              // Handle registration logic here
-                            },
-                            child: const Text('REGISTER'),
+                          CustomElevatedButton(
+                            text: 'REGISTER',
+                            onPressed: () {},
                           ),
                           SizedBox(height: 16),
                           Row(
