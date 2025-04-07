@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:petshop_applications/core/widgets/appbar_widget.dart';
+import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String username;
   final String avatarUrl;
+
   const TabMenuPage({
     super.key,
     required this.username,
@@ -16,68 +19,81 @@ class TabMenuPage extends StatefulWidget {
 }
 
 class _TabMenuPageState extends State<TabMenuPage> {
-  // late String _username;
   late String _avatarUrl;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // GlobalKey สำหรับ Scaffold
 
   @override
   void initState() {
     super.initState();
-    // _username = widget.username;
     _avatarUrl = widget.avatarUrl;
   }
 
   void _logout() {
-    Navigator.pop(context);
+    Navigator.pop(context); 
   }
 
-  Future<bool> _onWillPop() async {
-    return false;
+
+  void _goToPage(String pageName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PageDetail(pageName: pageName)),
+    );
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
-      child: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              bottom: const TabBar(
-                tabs: [
-                  Tab(text: 'Menu'),
-                  Tab(icon: Icon(Icons.person)),
-                  Tab(text: 'Logout'),
+      onWillPop: () async => false,
+      child: Scaffold(
+        key: _scaffoldKey, 
+        appBar: CustomAppBar(
+          avatarUrl: _avatarUrl,
+          onMenuPressed: () {
+            _scaffoldKey.currentState?.openDrawer(); 
+          },
+          onLogoutPressed: _logout,
+        ),
+        drawer: CustomDrawer(
+          onMenuItemTapped: _goToPage,
+        ),
+        body: Column(
+          children: [
+            Expanded(child: Center(child: Text("เนื้อหาหลัก"))),
+            Container(
+              width: double.infinity,
+              color: Color(0xFFEEBDCFF),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/Logocat.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                  Text(
+                    'ติดต่อเรา: support@petshop.com',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
                 ],
               ),
             ),
-          ),
-          body: TabBarView(
-            children: [
-              const Center(child: Text('Menu')),
-              const Center(child: Text('Profile')),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(_avatarUrl),
-                    ),
-                    ElevatedButton(
-                      onPressed: _logout,
-                      child: const Text('Logout'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+// ตัวอย่างหน้ารายละเอียดที่แสดงเมื่อเลือกเมนู
+class PageDetail extends StatelessWidget {
+  final String pageName;
+  const PageDetail({Key? key, required this.pageName}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(pageName)),
+      body: Center(child: Text('นี่คือหน้า $pageName')),
     );
   }
 }

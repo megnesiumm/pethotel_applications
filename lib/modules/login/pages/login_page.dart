@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
-                                color: Colors.white.withOpacity(0.6),
+                                color: Colors.white.withOpacity(0.65),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(30.0),
@@ -146,7 +146,12 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text('USERNAME'),
+                                      child: Text(
+                                        'USERNAME',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                     SizedBox(height: 4),
                                     SizedBox(
@@ -166,7 +171,11 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(height: 28),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text('PASSWORD'),
+                                      child: Text('PASSWORD',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                     ),
                                     SizedBox(height: 4),
                                     SizedBox(

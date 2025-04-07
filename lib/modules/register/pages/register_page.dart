@@ -9,6 +9,57 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
+class _PhoneNumberInputFormatter extends TextInputFormatter {
+  final String countryCode;
+
+  _PhoneNumberInputFormatter(this.countryCode);
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // ตัด country code ออกก่อน format
+    String text = newValue.text;
+
+    // ลบช่องว่าง + ค่าที่พิมพ์ซ้ำกับ countryCode
+    String numericOnly = text
+        .replaceFirst(countryCode, '')
+        .replaceAll(RegExp(r'[^\d]'), '');
+
+    // จำกัดให้พิมพ์ได้ไม่เกิน 10 ตัว
+    if (numericOnly.length > 10) {
+      numericOnly = numericOnly.substring(0, 10);
+    }
+
+    // แยกตาม pattern: 3-3-4
+    String formatted = '';
+    if (numericOnly.length >= 1) {
+      formatted = countryCode + ' ';
+      if (numericOnly.length <= 3) {
+        formatted += numericOnly;
+      } else if (numericOnly.length <= 6) {
+        formatted +=
+            numericOnly.substring(0, 3) + ' ' + numericOnly.substring(3);
+      } else {
+        formatted +=
+            numericOnly.substring(0, 3) +
+            ' ' +
+            numericOnly.substring(3, 6) +
+            ' ' +
+            numericOnly.substring(6);
+      }
+    } else {
+      formatted = countryCode + ' ';
+    }
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+}
+
 class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
@@ -18,6 +69,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  String _selectedCountryCode = '+66';
+
+  final List<String> _countryCodes = ['+66', '+1', '+44', '+91'];
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      color: Colors.white.withOpacity(0.6),
+                      color: Colors.white.withOpacity(0.65),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(30.0),
@@ -60,7 +114,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           SizedBox(height: 10),
 
-                          // Name and Surname fields with Align for left-aligned label
                           Row(
                             children: [
                               Expanded(
@@ -70,13 +123,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        'Name',
+                                        'NAME',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
+                                    SizedBox(height: 4),
                                     CustomFormField(
                                       controller: _nameController,
                                       hintText: 'Enter name',
@@ -90,7 +144,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 16),
+                              SizedBox(height: 22),
+                                SizedBox(width: 10),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,13 +153,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        'Surname',
+                                        'SURNAME',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
+                                    SizedBox(height: 4),
                                     CustomFormField(
                                       controller: _surnameController,
                                       hintText: 'Enter surname',
@@ -121,22 +177,21 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
-
-                          // Email field using CustomFormField
+                          SizedBox(height: 22),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Email',
+                                  'EMAIL',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 4),
                               CustomFormField(
                                 controller: _emailController,
                                 hintText: 'Enter your email',
@@ -149,53 +204,132 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
-
-                          // Phone Number field using CustomFormField
+                          SizedBox(height: 22),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Phone Number',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              Text(
+                                'PHONE NUMBER',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              CustomFormField(
-                                controller: _phoneController,
-                                hintText: 'Enter your phone number',
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
+                              SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 36,
+                                    width: 42,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.grey),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
+                                    child: DropdownButton<String>(
+                                      value: _selectedCountryCode,
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down_sharp,
+                                      ),
+                                      underline: SizedBox(),
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            _selectedCountryCode = value;
+
+                                            final regex = RegExp(r'^\+\d+\s*');
+                                            String current = _phoneController
+                                                .text
+                                                .replaceFirst(regex, '');
+                                            _phoneController.text =
+                                                "$_selectedCountryCode $current";
+                                            _phoneController.selection =
+                                                TextSelection.fromPosition(
+                                                  TextPosition(
+                                                    offset:
+                                                        _phoneController
+                                                            .text
+                                                            .length,
+                                                  ),
+                                                );
+                                          });
+                                        }
+                                      },
+
+                                      selectedItemBuilder: (context) {
+                                        return _countryCodes.map((code) {
+                                          return Container(width: 0);
+                                        }).toList();
+                                      },
+                                      items:
+                                          _countryCodes.map((code) {
+                                            return DropdownMenuItem<String>(
+                                              value: code,
+                                              child: Text(code),
+                                            );
+                                          }).toList(),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+
+                                  Expanded(
+                                    child: CustomFormField(
+                                      controller: _phoneController,
+                                      hintText: 'Enter your phone number',
+                                      inputFormatters: [
+                                        _PhoneNumberInputFormatter(
+                                          _selectedCountryCode,
+                                        ),
+                                      ],
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your phone number';
+                                        }
+                                        if (!value.startsWith(
+                                          _selectedCountryCode,
+                                        )) {
+                                          return 'Phone must start with $_selectedCountryCode';
+                                        }
+
+                                        final digits = value.replaceAll(
+                                          RegExp(r'[^\d]'),
+                                          '',
+                                        );
+                                        if (digits.length !=
+                                            (_selectedCountryCode
+                                                    .replaceAll('+', '')
+                                                    .length +
+                                                10)) {
+                                          return 'Phone number must be 10 digits';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
                                 ],
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your phone number';
-                                  }
-                                  return null;
-                                },
                               ),
+
+                              SizedBox(height: 8),
                             ],
                           ),
-                          SizedBox(height: 16),
 
-                          // Password field using CustomFormField
+                          SizedBox(height: 22),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Create Password',
+                                  'CREATE PASSWORD',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 4),
                               CustomFormField(
                                 controller: _passwordController,
                                 hintText: 'Enter your password',
@@ -213,27 +347,38 @@ class _RegisterPageState extends State<RegisterPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a password';
                                   }
+                                  if (value.length < 8) {
+                                    return 'Password must be at least 8 characters';
+                                  }
                                   return null;
                                 },
                               ),
+
+                              SizedBox(height: 6),
+                              Text(
+                                'Password must contain a minimum of 8 characters',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
                           ),
-                          SizedBox(height: 16),
-
-                          // Confirm Password field using CustomFormField
+                          SizedBox(height: 22),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Confirm Password',
+                                  'CONFIRM PASSWORD',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 4),
                               CustomFormField(
                                 controller: _confirmPasswordController,
                                 hintText: 'Confirm your password',

@@ -9,6 +9,7 @@ class CustomFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final VoidCallback? onSuffixIconPressed;
   final List<TextInputFormatter>? inputFormatters;
+  
 
   const CustomFormField({
     required this.controller,
@@ -24,6 +25,7 @@ class CustomFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
+      width: double.infinity,
       child: TextFormField(
         controller: controller,
         obscureText: obscureText,
