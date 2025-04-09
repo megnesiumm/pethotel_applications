@@ -27,30 +27,54 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
 
   Future<void> _login() async {
-    final url = Uri.parse('https://www.melivecode.com/api/login');
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode({
-      'username': _usernameController.text,
-      'password': _passwordController.text,
-    });
-    final response = await http.post(url, headers: headers, body: body);
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      _showsnackbar(jsonResponse['message']);
-      _navigtorkey.currentState?.push(
-        MaterialPageRoute(
-          builder:
-              (context) => TabMenuPage(
-                username: jsonResponse['user']['username'],
-                avatarUrl: jsonResponse['user']['avatar'],
-              ),
-        ),
-      );
-    } else if (response.statusCode == 401) {
-      final jsonResponse = jsonDecode(response.body);
-      _showsnackbar(jsonResponse['message']);
-    } else {
-      _showsnackbar('Login failed. Please try again.');
+    // แสดงการโหลดก่อนเริ่มการล็อกอิน
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    try {
+      final url = Uri.parse('https://www.melivecode.com/api/login');
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode({
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      });
+
+      final response = await http.post(url, headers: headers, body: body);
+
+      // ปิดการแสดง CircularProgressIndicator
+      Navigator.of(context).pop();
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        _showsnackbar(jsonResponse['message']);
+
+        // นำผู้ใช้ไปยังหน้า TabMenuPage
+        _navigtorkey.currentState?.push(
+          MaterialPageRoute(
+            builder:
+                (context) => TabMenuPage(
+                  username: jsonResponse['user']['username'],
+                  avatarUrl: jsonResponse['user']['avatar'],
+                ),
+          ),
+        );
+      } else if (response.statusCode == 401) {
+        final jsonResponse = jsonDecode(response.body);
+        _showsnackbar(jsonResponse['message']);
+      } else {
+        _showsnackbar('Login failed. Please try again.');
+      }
+    } catch (e) {
+      // ปิดการแสดง CircularProgressIndicator
+      Navigator.of(context).pop();
+
+      // การจัดการข้อผิดพลาดหาก API ล้มเหลว
+      _showsnackbar('An error occurred. Please try again.');
+      print('Error: $e');
     }
   }
 
@@ -171,11 +195,12 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(height: 28),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text('PASSWORD',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      child: Text(
+                                        'PASSWORD',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                      ),
                                     ),
                                     SizedBox(height: 4),
                                     SizedBox(

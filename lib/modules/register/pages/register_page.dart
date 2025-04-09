@@ -75,6 +75,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // คำนวณขนาดหน้าจอ
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Theme(
       data: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Noto Sans'),
@@ -144,8 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 22),
-                                SizedBox(width: 10),
+                              SizedBox(width: 10),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +166,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                     CustomFormField(
                                       controller: _surnameController,
                                       hintText: 'Enter surname',
-
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter your surname';
@@ -177,6 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ],
                           ),
+
                           SizedBox(height: 22),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,12 +259,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                           });
                                         }
                                       },
-
-                                      selectedItemBuilder: (context) {
-                                        return _countryCodes.map((code) {
-                                          return Container(width: 0);
-                                        }).toList();
-                                      },
                                       items:
                                           _countryCodes.map((code) {
                                             return DropdownMenuItem<String>(
@@ -270,10 +266,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                               child: Text(code),
                                             );
                                           }).toList(),
+                                      // ขยาย DropdownButton ให้เต็มความกว้าง
+                                      isExpanded: true,
+                                      hint: Text('Select Country Code'),
+                                      style: TextStyle(fontSize: 16),
+                                      iconSize: 24,
+                                      menuMaxHeight:
+                                          200, // Use menuMaxHeight instead
+                                      iconEnabledColor: Colors.black,
                                     ),
                                   ),
                                   SizedBox(width: 10),
-
                                   Expanded(
                                     child: CustomFormField(
                                       controller: _phoneController,
@@ -310,7 +313,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ],
                               ),
-
                               SizedBox(height: 8),
                             ],
                           ),
@@ -353,7 +355,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                   return null;
                                 },
                               ),
-
                               SizedBox(height: 6),
                               Text(
                                 'Password must contain a minimum of 8 characters',

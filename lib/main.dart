@@ -10,6 +10,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+      theme: ThemeData(
+        textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Noto Sans'),
+      ),
+    );
   }
 }

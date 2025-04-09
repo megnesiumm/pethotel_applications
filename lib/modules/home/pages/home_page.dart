@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petshop_applications/core/widgets/appbar_widget.dart';
 import 'package:petshop_applications/core/widgets/drawer_widget.dart';
+import 'package:petshop_applications/core/widgets/bottom_bar_widget.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String username;
@@ -20,7 +21,7 @@ class TabMenuPage extends StatefulWidget {
 
 class _TabMenuPageState extends State<TabMenuPage> {
   late String _avatarUrl;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); // GlobalKey สำหรับ Scaffold
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -29,9 +30,8 @@ class _TabMenuPageState extends State<TabMenuPage> {
   }
 
   void _logout() {
-    Navigator.pop(context); 
+    Navigator.pop(context);
   }
-
 
   void _goToPage(String pageName) {
     Navigator.push(
@@ -45,39 +45,26 @@ class _TabMenuPageState extends State<TabMenuPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        key: _scaffoldKey, 
+        key: _scaffoldKey,
         appBar: CustomAppBar(
           avatarUrl: _avatarUrl,
           onMenuPressed: () {
-            _scaffoldKey.currentState?.openDrawer(); 
+            _scaffoldKey.currentState?.openDrawer();
           },
           onLogoutPressed: _logout,
         ),
-        drawer: CustomDrawer(
-          onMenuItemTapped: _goToPage,
-        ),
-        body: Column(
-          children: [
-            Expanded(child: Center(child: Text("เนื้อหาหลัก"))),
-            Container(
-              width: double.infinity,
-              color: Color(0xFFEEBDCFF),
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/Logocat.png',
-                    width: 150,
-                    height: 150,
-                  ),
-                  Text(
-                    'ติดต่อเรา: support@petshop.com',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                ],
+        drawer: CustomDrawer(onMenuItemTapped: _goToPage),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.6,
+                alignment: Alignment.center,
+                child: const Text("เนื้อหาหลัก"),
               ),
-            ),
-          ],
+              const BottomBarWidget(),
+            ],
+          ),
         ),
       ),
     );
