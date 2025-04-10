@@ -71,13 +71,12 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _obscureConfirmPassword = true;
   String _selectedCountryCode = '+66';
 
+  final _formKey = GlobalKey<FormState>();
+
   final List<String> _countryCodes = ['+66', '+1', '+44', '+91'];
 
   @override
   Widget build(BuildContext context) {
-    // คำนวณขนาดหน้าจอ
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Theme(
       data: Theme.of(context).copyWith(
         textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Noto Sans'),
@@ -100,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(24, 70, 24, 62),
                 child: Form(
+                  key: _formKey,
                   child: Container(
                     height: double.infinity,
                     decoration: BoxDecoration(
@@ -197,6 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               CustomFormField(
                                 controller: _emailController,
                                 hintText: 'Enter your email',
+                                keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your email';
@@ -281,6 +282,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     child: CustomFormField(
                                       controller: _phoneController,
                                       hintText: 'Enter your phone number',
+                                      keyboardType: TextInputType.phone,
                                       inputFormatters: [
                                         _PhoneNumberInputFormatter(
                                           _selectedCountryCode,
@@ -411,7 +413,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           // Register button
                           CustomElevatedButton(
                             text: 'REGISTER',
-                            onPressed: () {},
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.reset();
+                                _nameController.clear();
+                                _surnameController.clear();
+                                _emailController.clear();
+                                _phoneController.clear();
+                                _passwordController.clear();
+                                _confirmPasswordController.clear();
+                                setState(() {
+                                  _selectedCountryCode = '+66';
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Register สำเร็จ!')),
+                                );
+                              }
+                            },
                           ),
                           SizedBox(height: 16),
                           Row(

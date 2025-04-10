@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petshop_applications/core/widgets/appbar_widget.dart';
 import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 import 'package:petshop_applications/core/widgets/bottom_bar_widget.dart';
+import 'package:petshop_applications/modules/login/pages/login_page.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String username;
@@ -30,7 +31,10 @@ class _TabMenuPageState extends State<TabMenuPage> {
   }
 
   void _logout() {
-    Navigator.pop(context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
 
   void _goToPage(String pageName) {

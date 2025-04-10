@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BottomBarWidget extends StatelessWidget {
   const BottomBarWidget({super.key});
@@ -36,13 +37,33 @@ class BottomBarWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.phone_outlined, color: Colors.black),
               SizedBox(width: 6),
-              Text('โทร. 012-345-6789'),
+              GestureDetector(
+                onTap: () {
+                  launch("tel://0123456789");
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.phone_outlined, color: Colors.black),
+                    SizedBox(width: 6),
+                    Text('โทร. 012-345-6789'),
+                  ],
+                ),
+              ),
+
               SizedBox(width: 20),
-              Icon(Icons.email_outlined, color: Colors.black),
-              SizedBox(width: 6),
-              Text('zzzofficial@gmail.com'),
+              GestureDetector(
+                onTap: () {
+                  launch("mailto:zzzofficial@gmail.com");
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.email_outlined, color: Colors.black),
+                    SizedBox(width: 6),
+                    Text('zzzofficial@gmail.com'),
+                  ],
+                ),
+              ),
             ],
           ),
           SizedBox(height: 40),

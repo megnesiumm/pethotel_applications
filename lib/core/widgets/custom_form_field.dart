@@ -9,7 +9,7 @@ class CustomFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final VoidCallback? onSuffixIconPressed;
   final List<TextInputFormatter>? inputFormatters;
-  
+  final TextInputType? keyboardType;
 
   const CustomFormField({
     required this.controller,
@@ -19,6 +19,7 @@ class CustomFormField extends StatelessWidget {
     this.validator,
     this.onSuffixIconPressed,
     this.inputFormatters,
+    this.keyboardType,
   });
 
   @override
@@ -29,6 +30,7 @@ class CustomFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: obscureText,
+        keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         textAlign: TextAlign.left,
         decoration: InputDecoration(

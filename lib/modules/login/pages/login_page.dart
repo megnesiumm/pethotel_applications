@@ -24,10 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   final _navigtorkey = GlobalKey<NavigatorState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
   bool _obscurePassword = true;
 
   Future<void> _login() async {
-    // แสดงการโหลดก่อนเริ่มการล็อกอิน
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -45,14 +46,16 @@ class _LoginPageState extends State<LoginPage> {
 
       final response = await http.post(url, headers: headers, body: body);
 
-      // ปิดการแสดง CircularProgressIndicator
       Navigator.of(context).pop();
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         _showsnackbar(jsonResponse['message']);
 
-        // นำผู้ใช้ไปยังหน้า TabMenuPage
+        _formKey.currentState!.reset();
+        _usernameController.clear();
+        _passwordController.clear();
+
         _navigtorkey.currentState?.push(
           MaterialPageRoute(
             builder:
@@ -229,12 +232,23 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     SizedBox(height: 70),
                                     CustomElevatedButton(
-                                      text: 'LOG IN',
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          _login();
-                                        }
-                                      },
+                                      text:
+                                          _isLoading ? 'Loading...' : 'LOG IN',
+                                      onPressed:
+                                          _isLoading
+                                              ? null // disable ปุ่ม
+                                              : () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  setState(
+                                                    () => _isLoading = true,
+                                                  );
+                                                  await _login();
+                                                  setState(
+                                                    () => _isLoading = false,
+                                                  );
+                                                }
+                                              },
                                     ),
 
                                     SizedBox(height: 70),
