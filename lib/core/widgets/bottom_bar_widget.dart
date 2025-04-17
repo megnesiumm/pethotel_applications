@@ -11,6 +11,7 @@ class BottomBarWidget extends StatelessWidget {
 
     return Container(
       width: double.infinity,
+
       color: Color(0xFFEEBDCFF),
       child: Column(
         children: [
