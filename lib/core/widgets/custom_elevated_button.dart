@@ -9,6 +9,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color textColor;
   final double borderRadius;
   final double fontSize;
+  final FontWeight? fontWeight;
 
   const CustomElevatedButton({
     super.key,
@@ -20,6 +21,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.borderRadius = 16,
     this.fontSize = 14,
+    this.fontWeight,
   });
 
   @override
@@ -34,7 +36,14 @@ class CustomElevatedButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: Text(text, style: TextStyle(fontSize: fontSize)),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: textColor,
+        ),
+      ),
     );
   }
 }

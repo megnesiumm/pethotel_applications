@@ -16,7 +16,6 @@ class BottomBarWidget extends StatelessWidget {
       child: Column(
         children: [
           Image.asset('assets/images/Logocat.png', width: 120, height: 120),
-
           Text('ติดต่อ', style: TextStyle(fontSize: fontSize)),
           SizedBox(height: 20),
           Row(
