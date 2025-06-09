@@ -13,13 +13,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        avatarUrl: 'https://i.pravatar.cc/300', 
+        avatarUrl: 'https://i.pravatar.cc/300',
         onMenuPressed: () {
-          // ฟังก์ชันสำหรับเปิดเมนู
           Scaffold.of(context).openDrawer();
         },
         onLogoutPressed: () {
-          // ฟังก์ชันสำหรับออกจากระบบ
           Navigator.pushReplacementNamed(context, '/login');
         },
       ),
