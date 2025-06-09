@@ -24,11 +24,11 @@ class CustomDrawer extends StatelessWidget {
                   height: 150,
                 ),
                 const SizedBox(height: 20),
-                _buildMenuItem('หน้าแรก', context),
-                _buildMenuItem('ห้องพัก', context),
-                _buildMenuItem('บริการอื่นๆ', context),
-                _buildMenuItem('แกลลอรี่และรีวิว', context),
-                _buildMenuItem('เกี่ยวกับเรา', context),
+                _buildMenuItem(context, 'หน้าแรก'),
+                _buildMenuItem(context, 'ห้องพัก'),
+                _buildMenuItem(context, 'บริการอื่นๆ'),
+                _buildMenuItem(context, 'แกลลอรี่และรีวิว'),
+                _buildMenuItem(context, 'เกี่ยวกับเรา'),
               ],
             ),
             Positioned(
@@ -51,11 +51,11 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(String title, BuildContext context) {
+  Widget _buildMenuItem(BuildContext context, String title) {
     return ListTile(
       title: Text(
         title,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
       onTap: () {

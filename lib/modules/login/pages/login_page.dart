@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/custom_form_field.dart';
-import 'package:petshop_applications/modules/home/pages/home_page.dart';
+import 'package:petshop_applications/modules/tabmenupage/pages/tabemenu_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -56,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
         _usernameController.clear();
         _passwordController.clear();
 
-        _navigtorkey.currentState?.push(
+        // ใช้ Navigator.of(context) ในการนำทางแทน
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder:
                 (context) => TabMenuPage(
@@ -72,10 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         _showsnackbar('Login failed. Please try again.');
       }
     } catch (e) {
-      // ปิดการแสดง CircularProgressIndicator
       Navigator.of(context).pop();
-
-      // การจัดการข้อผิดพลาดหาก API ล้มเหลว
       _showsnackbar('An error occurred. Please try again.');
       print('Error: $e');
     }

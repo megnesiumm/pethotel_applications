@@ -74,6 +74,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
   final List<String> _countryCodes = ['+66', '+1', '+44', '+91'];
+  final Map<String, int> phoneLengths = {
+    '+66': 10,
+    '+1': 10,
+    '+44': 10, 
+    '+91': 10,
+  };
 
   @override
   Widget build(BuildContext context) {
