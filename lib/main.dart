@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:petshop_applications/modules/about_page/about_page.dart';
-import 'package:petshop_applications/modules/gallery_review_page/gallery_page.dart';
-import 'package:petshop_applications/modules/home_page/home_page.dart';
+import 'package:petshop_applications/modules/about_page/pages/about_page.dart';
+import 'package:petshop_applications/modules/gallery_review_page/pages/gallery_page.dart';
 import 'package:petshop_applications/modules/login/pages/login_page.dart';
-import 'package:petshop_applications/modules/room_page/room_page.dart';
-import 'package:petshop_applications/modules/services_page/services_page.dart';
+import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
+import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
 import 'package:petshop_applications/modules/tabmenupage/pages/tabemenu_page.dart'; // เพิ่ม path ที่ถูกต้อง
 
 void main() {

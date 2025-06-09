@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:petshop_applications/core/widgets/drawer_widget.dart';
-import 'package:petshop_applications/modules/about_page/about_page.dart';
-import 'package:petshop_applications/modules/detail_page/detail_page.dart';
-import 'package:petshop_applications/modules/gallery_review_page/gallery_page.dart';
-import 'package:petshop_applications/modules/home_page/home_page.dart';
-import 'package:petshop_applications/modules/login/pages/login_page.dart';
-import 'package:petshop_applications/modules/room_page/room_page.dart';
-import 'package:petshop_applications/modules/services_page/services_page.dart';
+import 'package:petshop_applications/modules/about_page/pages/about_page.dart';
+import 'package:petshop_applications/modules/detail_page/pages/detail_page.dart';
+import 'package:petshop_applications/modules/gallery_review_page/pages/gallery_page.dart';
+import 'package:petshop_applications/modules/home_page/pages/home_page.dart';
+import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
+import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String username;
@@ -25,13 +24,11 @@ class TabMenuPage extends StatefulWidget {
 }
 
 class _TabMenuPageState extends State<TabMenuPage> {
-  late String _avatarUrl;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _avatarUrl = widget.avatarUrl;
   }
 
   void _goToPage(String pageName) {
@@ -57,19 +54,12 @@ class _TabMenuPageState extends State<TabMenuPage> {
         targetPage = const AboutPage();
         break;
       default:
-        targetPage = PageDetail(pageName: pageName);
+        targetPage = PageDetail();
     }
 
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => targetPage),
-    );
-  }
-
-  void _logout() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
 
@@ -79,7 +69,7 @@ class _TabMenuPageState extends State<TabMenuPage> {
       onWillPop: () async => false,
       child: Scaffold(
         key: _scaffoldKey,
-       
+
         drawer: CustomDrawer(onMenuItemTapped: _goToPage),
         body: Stack(children: [HomePage()]),
       ),
@@ -92,42 +82,3 @@ const TextStyle titleStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.black,
 );
-
-Widget _buildCircleImageWithText(String imagePath, String label) {
-  return Align(
-    alignment: Alignment.topCenter,
-    child: ClipOval(
-      child: Container(
-        width: 180,
-        height: 180,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Opacity(
-              opacity: 0.8,
-              child: Image.asset(imagePath, fit: BoxFit.cover),
-            ),
-            Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Color(0xff636363),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}

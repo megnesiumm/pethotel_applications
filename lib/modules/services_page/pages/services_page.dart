@@ -1,0 +1,13 @@
+import 'package:flutter/material.dart';
+
+class ServicesPage extends StatelessWidget {
+  const ServicesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('บริการอื่นๆ')),
+      body: Center(child: const Text('บริการอื่นๆ จะมาเร็วๆ นี้!')),
+    );
+  }
+}
