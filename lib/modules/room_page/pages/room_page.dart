@@ -21,34 +21,36 @@ Widget _buildHeader(BuildContext context) {
         opacity: 0.65,
         child: Image.asset(
           'assets/images/homepage1.png',
-          width: MediaQuery.of(context).size.width,
+
           height: MediaQuery.of(context).size.height * 0.4,
           fit: BoxFit.cover,
         ),
       ),
-   
-      Positioned(
-        top: 74,
-        left: MediaQuery.of(context).size.width / 2 - 180,
+      Center(
+        child: Text(
+          'CAPSULE',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            shadows: [],
+          ),
+        ),
+      ),
+      Center(
         child: Container(
-          width: 360,
-          height: 160,
+          width: 273,
+          height: 353,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white, width: 2),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 4,
-                offset: Offset(0, 4),
-              ),
-            ],
+            border: Border.all(color: Colors.white, width: 3),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.asset(
-              'assets/images/backgroundlogin.png',
+              'assets/images/cat4.png',
+              width: 273,
+              height: 353,
               fit: BoxFit.cover,
             ),
           ),
