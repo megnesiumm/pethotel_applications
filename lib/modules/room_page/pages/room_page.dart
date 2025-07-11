@@ -8,7 +8,58 @@ class RoomPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('ห้องพัก')),
       body: SingleChildScrollView(
-        child: Column(children: [_buildHeader(context)]),
+        child: Column(
+          children: [
+            _buildHeader(context),
+            SizedBox(height: 7),
+            Positioned(
+              top: 400,
+              right: 30,
+              child: Container(
+                width: 280,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(90),
+                  color: Color.fromRGBO(171, 128, 227, 0.5).withOpacity(0.5),
+                ),
+                child: Center(
+                  child: Text(
+                    'ราคา 200 บาท/คืน',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.star, size: 20, color: Colors.grey),
+                SizedBox(width: 8),
+                Text("ชามอาหาร ชามน้ำ"),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.star, size: 20, color: Colors.grey),
+                SizedBox(width: 8),
+                Text("กระบะทราย พร้อมที่ตักส่วนตัว"),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.star, size: 20, color: Colors.grey),
+                SizedBox(width: 8),
+                Text("กล่องนอน หลุมใส แผ่นลับเล็บ"),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -62,15 +113,11 @@ Widget _buildHeader(BuildContext context) {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/cat4.png',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/images/cat4.png', fit: BoxFit.cover),
             ),
           ),
         ),
 
-        // กล่องข้อความ "1 ตัว"
         Positioned(
           top: 40,
           left: 30,
@@ -97,5 +144,3 @@ Widget _buildHeader(BuildContext context) {
     ),
   );
 }
-
-  
