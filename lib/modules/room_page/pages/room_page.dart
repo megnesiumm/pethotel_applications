@@ -173,8 +173,8 @@ Widget _buildHeader(BuildContext context) {
 
         // รูปภาพ catphoto
         Container(
-          width: 273,
-          height: 353,
+          width: 220,
+          height: 155,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white, width: 3),
             borderRadius: BorderRadius.circular(12),
