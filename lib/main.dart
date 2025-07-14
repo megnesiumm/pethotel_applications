@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:petshop_applications/modules/about_page/pages/about_page.dart';
 import 'package:petshop_applications/modules/gallery_review_page/pages/gallery_page.dart';
+import 'package:petshop_applications/modules/home_page/pages/home_page.dart';
 import 'package:petshop_applications/modules/login/pages/login_page.dart';
 import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
 import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
-import 'package:petshop_applications/modules/tabmenupage/pages/tabemenu_page.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/login',
       routes: {
-        '/':
-            (context) => TabMenuPage(
-              username: 'guest',
-              avatarUrl: 'https://i.pravatar.cc/300',
-            ),
+        '/': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/room': (context) => const RoomPage(),
         '/services': (context) => const ServicesPage(),

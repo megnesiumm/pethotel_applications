@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/custom_form_field.dart';
-import 'package:petshop_applications/modules/tabmenupage/pages/tabemenu_page.dart';
+import 'package:petshop_applications/modules/home_page/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -57,15 +57,9 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.clear();
 
         // ใช้ Navigator.of(context) ในการนำทางแทน
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder:
-                (context) => TabMenuPage(
-                  username: jsonResponse['user']['username'],
-                  avatarUrl: jsonResponse['user']['avatar'],
-                ),
-          ),
-        );
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
       } else if (response.statusCode == 401) {
         final jsonResponse = jsonDecode(response.body);
         _showsnackbar(jsonResponse['message']);

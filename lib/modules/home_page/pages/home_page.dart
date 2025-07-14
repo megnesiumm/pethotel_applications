@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petshop_applications/core/widgets/appbar_widget.dart';
 import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/bottom_bar_widget.dart';
+import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,19 +10,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: CustomDrawer(),
       appBar: CustomAppBar(
         avatarUrl: 'https://i.pravatar.cc/300',
         onMenuPressed: () {
-          Scaffold.of(context).openDrawer();
+          _scaffoldKey.currentState?.openDrawer();
         },
         onLogoutPressed: () {
           Navigator.pushReplacementNamed(context, '/login');
         },
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [

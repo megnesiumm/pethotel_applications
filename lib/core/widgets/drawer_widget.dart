@@ -1,22 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:petshop_applications/modules/about_page/pages/about_page.dart';
+import 'package:petshop_applications/modules/detail_page/pages/detail_page.dart';
+import 'package:petshop_applications/modules/gallery_review_page/pages/gallery_page.dart';
+import 'package:petshop_applications/modules/home_page/pages/home_page.dart';
+import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
+import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final Function(String) onMenuItemTapped;
+  const CustomDrawer({super.key});
 
-  const CustomDrawer({Key? key, required this.onMenuItemTapped})
-    : super(key: key);
+  void _goToPage(BuildContext context, String pageName) {
+    Widget targetPage;
+
+    switch (pageName) {
+      case 'หน้าแรก':
+        targetPage = HomePage();
+        break;
+      case 'ห้องพัก':
+        targetPage = const RoomPage();
+        break;
+      case 'บริการอื่นๆ':
+        targetPage = const ServicesPage();
+        break;
+      case 'แกลลอรี่และรีวิว':
+        targetPage = const GalleryPage();
+        break;
+      case 'เกี่ยวกับเรา':
+        targetPage = const AboutPage();
+        break;
+      default:
+        targetPage = PageDetail();
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => targetPage),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       width: double.infinity,
       child: Container(
-        color: Color(0xFFEEBDCFF),
+        color: const Color(0xFFEEBDCFF),
         child: Stack(
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   'assets/images/Logocat.png',
@@ -41,7 +72,7 @@ class CustomDrawer extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context); // ปิด drawer
                 },
               ),
             ),
@@ -59,8 +90,8 @@ class CustomDrawer extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       onTap: () {
-        Navigator.pop(context);
-        onMenuItemTapped(title);
+        Navigator.pop(context); // ปิด drawer ก่อน
+        _goToPage(context, title); // ไปหน้าใหม่
       },
     );
   }
