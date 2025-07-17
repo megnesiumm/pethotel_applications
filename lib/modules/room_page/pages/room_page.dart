@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petshop_applications/core/widgets/appbar_widget.dart';
 import 'package:petshop_applications/core/widgets/bottom_bar_widget.dart';
 import 'package:petshop_applications/core/widgets/drawer_widget.dart';
+import 'package:petshop_applications/core/widgets/image_slider.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key});
@@ -171,19 +172,7 @@ Widget _buildHeader(BuildContext context) {
 
         const SizedBox(height: 20),
 
-        // รูปภาพ catphoto
-        Container(
-          width: 220,
-          height: 155,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 3),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset('assets/images/catphoto.png', fit: BoxFit.cover),
-          ),
-        ),
+        const ImageSliderBox(),
 
         const SizedBox(height: 20),
       ],

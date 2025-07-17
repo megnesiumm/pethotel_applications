@@ -15,6 +15,7 @@ class CustomDrawer extends StatelessWidget {
     switch (pageName) {
       case 'หน้าแรก':
         targetPage = HomePage();
+        
         break;
       case 'ห้องพัก':
         targetPage = const RoomPage();
