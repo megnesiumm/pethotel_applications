@@ -418,6 +418,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           // Register button
                           CustomElevatedButton(
+                            fontSize: 14,
                             text: 'REGISTER',
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {

@@ -137,7 +137,6 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 20),
         CustomElevatedButton(
           text: 'จองเลย',
-          fontSize: 24,
           fontWeight: FontWeight.bold,
           backgroundColor: const Color(0xFFFF7B61FF),
           onPressed: () {},

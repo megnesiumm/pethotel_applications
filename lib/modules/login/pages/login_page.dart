@@ -224,6 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     SizedBox(height: 70),
                                     CustomElevatedButton(
+                                      fontSize: 14,
                                       text:
                                           _isLoading ? 'Loading...' : 'LOG IN',
                                       onPressed:
