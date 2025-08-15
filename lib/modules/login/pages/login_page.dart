@@ -12,354 +12,234 @@ import 'package:petshop_applications/modules/register/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
   @override
-  State<StatefulWidget> createState() {
-    return _LoginPageState();
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _navigtorkey = GlobalKey<NavigatorState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
-
-  bool _obscurePassword = true;
+  bool _isLoading = false, _obscurePassword = true;
 
   Future<void> _login() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
-
+    _showLoading();
     try {
-      final url = Uri.parse('https://www.melivecode.com/api/login');
-      final headers = {'Content-Type': 'application/json'};
-      final body = jsonEncode({
-        'username': _usernameController.text,
-        'password': _passwordController.text,
-      });
-
-      final response = await http.post(url, headers: headers, body: body);
-
-      Navigator.of(context).pop();
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        _showsnackbar(jsonResponse['message']);
-
+      final res = await http.post(
+        Uri.parse('https://www.melivecode.com/api/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        }),
+      );
+      Navigator.pop(context);
+      final json = jsonDecode(res.body);
+      _showSnack(json['message']);
+      if (res.statusCode == 200) {
         _formKey.currentState!.reset();
-        _usernameController.clear();
-        _passwordController.clear();
-
-        // ใช้ Navigator.of(context) ในการนำทางแทน
-        Navigator.of(
+        Navigator.pushReplacement(
           context,
-        ).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
-      } else if (response.statusCode == 401) {
-        final jsonResponse = jsonDecode(response.body);
-        _showsnackbar(jsonResponse['message']);
-      } else {
-        _showsnackbar('Login failed. Please try again.');
+          MaterialPageRoute(builder: (_) => HomePage()),
+        );
       }
-    } catch (e) {
-      Navigator.of(context).pop();
-      _showsnackbar('An error occurred. Please try again.');
-      print('Error: $e');
+    } catch (_) {
+      Navigator.pop(context);
+      _showSnack('An error occurred. Please try again.');
     }
   }
 
-  Future<void> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    if (googleUser == null) return;
-
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    print(
-      'Logged in with Google: ${FirebaseAuth.instance.currentUser?.displayName}',
+  Future<void> _googleLogin() async {
+    final user = await GoogleSignIn().signIn();
+    if (user == null) return;
+    final auth = await user.authentication;
+    await FirebaseAuth.instance.signInWithCredential(
+      GoogleAuthProvider.credential(
+        idToken: auth.idToken,
+        accessToken: auth.accessToken,
+      ),
     );
   }
 
-  Future<void> signInWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login();
+  Future<void> _facebookLogin() async {
+    final result = await FacebookAuth.instance.login();
     if (result.status == LoginStatus.success) {
-      final OAuthCredential credential = FacebookAuthProvider.credential(
-        result.accessToken!.token,
+      await FirebaseAuth.instance.signInWithCredential(
+        FacebookAuthProvider.credential(result.accessToken!.token),
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      print(
-        'Logged in with Facebook: ${FirebaseAuth.instance.currentUser?.displayName}',
-      );
-    } else {
-      print('Facebook login failed: ${result.status}');
     }
   }
 
-  void _showsnackbar(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  void _showSnack(String msg) =>
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  void _showLoading() => showDialog(
+    context: context,
+    builder: (_) => const Center(child: CircularProgressIndicator()),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: _navigtorkey,
-      onGenerateRoute: (route) {
-        return MaterialPageRoute(
-          builder:
-              (context) => Theme(
-                data: Theme.of(context).copyWith(
-                  textTheme: Theme.of(
-                    context,
-                  ).textTheme.apply(fontFamily: 'Noto Sans'),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  child: Scaffold(
-                    resizeToAvoidBottomInset: false,
-                    body: Container(
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage(
-                            'assets/images/backgroundlogin.png',
-                          ),
-                          fit: BoxFit.cover,
-                          opacity: 0.6,
-                        ),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 70, 24, 62),
-                          child: Form(
-                            key: _formKey,
-                            child: Container(
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: Colors.white.withOpacity(0.65),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(30.0),
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/Logocat.png',
-                                      width: 150,
-                                      height: 150,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'USERNAME',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    SizedBox(
-                                      height: 40,
-                                      child: CustomFormField(
-                                        controller: _usernameController,
-
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter your username';
-                                          }
-                                          return null;
-                                        },
-                                        hintText: 'Username',
-                                      ),
-                                    ),
-                                    SizedBox(height: 28),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        'PASSWORD',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    SizedBox(
-                                      height: 40,
-                                      child: CustomFormField(
-                                        controller: _passwordController,
-                                        hintText: 'password',
-                                        obscureText: _obscurePassword,
-                                        suffixIcon:
-                                            _obscurePassword
-                                                ? Icons.visibility_off
-                                                : Icons.visibility,
-                                        onSuffixIconPressed: () {
-                                          setState(() {
-                                            _obscurePassword =
-                                                !_obscurePassword;
-                                          });
-                                        },
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter a password';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(height: 70),
-                                    CustomElevatedButton(
-                                      fontSize: 14,
-                                      text:
-                                          _isLoading ? 'Loading...' : 'LOG IN',
-                                      onPressed:
-                                          _isLoading
-                                              ? null // disable ปุ่ม
-                                              : () async {
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  setState(
-                                                    () => _isLoading = true,
-                                                  );
-                                                  await _login();
-                                                  setState(
-                                                    () => _isLoading = false,
-                                                  );
-                                                }
-                                              },
-                                    ),
-
-                                    SizedBox(height: 70),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Divider(
-                                            color: Color(0xFFFF8D8D8D),
-                                            thickness: 1,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                          ),
-                                          child: Text(
-                                            'OR',
-                                            style: TextStyle(
-                                              color: Color(0xFFFF666666),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Divider(
-                                            color: Color(0xFFFF8D8D8D),
-                                            thickness: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 64),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            signInWithFacebook();
-                                          },
-                                          child: SvgPicture.asset(
-                                            'assets/icons/facebook.svg',
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            signInWithGoogle();
-                                          },
-                                          child: SvgPicture.asset(
-                                            'assets/icons/google.svg',
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            print('Line icon tapped');
-                                          },
-                                          child: SvgPicture.asset(
-                                            'assets/icons/line.svg',
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 50),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Are you new to ZZZ Hotel?',
-                                          style: TextStyle(
-                                            color: Color(0xFFFF505050),
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        SizedBox(width: 8),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) => RegisterPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Text(
-                                            'REGISTER',
-                                            style: TextStyle(
-                                              color: Color(0xFF9747FF),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/backgroundlogin.png'),
+                fit: BoxFit.cover,
+                opacity: 0.6,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 70, 24, 62),
+                child: Form(
+                  key: _formKey,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white.withOpacity(0.65),
+                    ),
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 28),
+                        _buildForm(),
+                        const SizedBox(height: 70),
+                        _buildLoginButton(),
+                        const SizedBox(height: 70),
+                        _buildOrDivider(),
+                        const SizedBox(height: 64),
+                        _buildSocialButtons(),
+                        const SizedBox(height: 30),
+                        _buildRegisterText(),
+                      ],
                     ),
                   ),
                 ),
               ),
-        );
-      },
+            ),
+          ),
+        ),
+      ),
     );
   }
+
+  Widget _buildHeader() =>
+      Image.asset('assets/images/Logocat.png', width: 150, height: 150);
+
+  Widget _buildForm() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text('USERNAME', style: TextStyle(fontWeight: FontWeight.bold)),
+      const SizedBox(height: 4),
+      SizedBox(
+        height: 40,
+        child: CustomFormField(
+          controller: _usernameController,
+          hintText: 'Username',
+          validator: (v) => v!.isEmpty ? 'Please enter your username' : null,
+        ),
+      ),
+      const SizedBox(height: 28),
+      const Text('PASSWORD', style: TextStyle(fontWeight: FontWeight.bold)),
+      const SizedBox(height: 4),
+      SizedBox(
+        height: 40,
+        child: CustomFormField(
+          controller: _passwordController,
+          hintText: 'Password',
+          obscureText: _obscurePassword,
+          suffixIcon:
+              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+          onSuffixIconPressed:
+              () => setState(() => _obscurePassword = !_obscurePassword),
+          validator: (v) => v!.isEmpty ? 'Please enter a password' : null,
+        ),
+      ),
+    ],
+  );
+
+  Widget _buildLoginButton() => CustomElevatedButton(
+    fontSize: 14,
+    text: _isLoading ? 'Loading...' : 'LOG IN',
+    onPressed:
+        _isLoading
+            ? null
+            : () async {
+              if (_formKey.currentState!.validate()) {
+                setState(() => _isLoading = true);
+                await _login();
+                setState(() => _isLoading = false);
+              }
+            },
+  );
+
+  Widget _buildOrDivider() => Row(
+    children: const [
+      Expanded(child: Divider(color: Color(0xFF8D8D8D))),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        child: Text('OR', style: TextStyle(color: Color(0xFF666666))),
+      ),
+      Expanded(child: Divider(color: Color(0xFF8D8D8D))),
+    ],
+  );
+
+  Widget _buildSocialButtons() => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      GestureDetector(
+        onTap: _facebookLogin,
+        child: SvgPicture.asset(
+          'assets/icons/facebook.svg',
+          width: 40,
+          height: 40,
+        ),
+      ),
+      GestureDetector(
+        onTap: _googleLogin,
+        child: SvgPicture.asset(
+          'assets/icons/google.svg',
+          width: 40,
+          height: 40,
+        ),
+      ),
+      GestureDetector(
+        onTap: () => print('Line tapped'),
+        child: SvgPicture.asset('assets/icons/line.svg', width: 40, height: 40),
+      ),
+    ],
+  );
+
+  Widget _buildRegisterText() => Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        'Are you new to ZZZ Hotel?',
+        style: TextStyle(color: Color(0xFF505050), fontSize: 12),
+      ),
+      const SizedBox(width: 8),
+      GestureDetector(
+        onTap:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => RegisterPage()),
+            ),
+        child: const Text(
+          'REGISTER',
+          style: TextStyle(
+            color: Color(0xFF9747FF),
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
+    ],
+  );
 }

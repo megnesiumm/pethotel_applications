@@ -25,7 +25,6 @@ class CustomFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
       width: double.infinity,
       child: TextFormField(
         controller: controller,
@@ -34,11 +33,9 @@ class CustomFormField extends StatelessWidget {
         inputFormatters: inputFormatters,
         textAlign: TextAlign.left,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 14, top: 8, bottom: 8),
-
+          contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           hintText: hintText,
           hintStyle: TextStyle(color: Color(0xFFFF989898), fontSize: 14),
-
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: Color(0xFFFFA1A1A1)),
