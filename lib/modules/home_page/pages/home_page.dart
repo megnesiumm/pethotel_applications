@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +19,9 @@ class _HomePageState extends State<HomePage> {
       drawer: CustomDrawer(),
       appBar: CustomAppBar(
         avatarUrl: 'https://i.pravatar.cc/300',
-        onMenuPressed: () {
-          _scaffoldKey.currentState?.openDrawer();
-        },
-        onLogoutPressed: () {
-          Navigator.pushReplacementNamed(context, '/login');
-        },
+        onMenuPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        onLogoutPressed:
+            () => Navigator.pushReplacementNamed(context, '/login'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -31,6 +29,7 @@ class _HomePageState extends State<HomePage> {
             _buildHeader(context),
             ..._buildFeatures(),
             _buildPromotionSection(context),
+
             const BottomBarWidget(),
           ],
         ),
@@ -45,16 +44,17 @@ class _HomePageState extends State<HomePage> {
           opacity: 0.65,
           child: Image.asset(
             'assets/images/homepage1.png',
-            width: MediaQuery.of(context).size.width,
+            width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.4,
             fit: BoxFit.cover,
           ),
         ),
-        Positioned(
+        const Positioned(
           top: 20,
           left: 20,
           child: Column(
-            children: const [
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text('ZZZ', style: _headerTextStyle),
               Text('HOTEL', style: _headerTextStyle),
             ],
@@ -105,7 +105,10 @@ class _HomePageState extends State<HomePage> {
         .map(
           (entry) => Transform.translate(
             offset: Offset(0, -50 + (entry.key * 20)),
-            child: _buildCircleImageWithText(entry.value[0], entry.value[1]),
+            child: FeatureItem(
+              imagePath: entry.value[0],
+              label: entry.value[1],
+            ),
           ),
         )
         .toList();
@@ -114,76 +117,106 @@ class _HomePageState extends State<HomePage> {
   Widget _buildPromotionSection(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 40),
-        const Text('PROMOTION !', style: _titleStyle),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('CAPSULE ROOM 7 วัน เพียง', style: _titleStyle),
-            SizedBox(width: 4),
-            Text(
-              ' 999B ',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
+        // Promotion 1: CAPSULE ROOM
+        const SizedBox(height: 55),
+        PromotionItem(
+          titles: ['PROMOTION !'], // จะติดกับ priceWidget
+          priceWidget: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: const [
+                  Text('CAPSULE ROOM 7 วัน เพียงแค่ ', style: _subtitleStyle),
+                  Text(
+                    '999',
+                    style: TextStyle(
+                      fontFamily: 'PalanquinDark',
+                      fontSize: 32,
+                      color: Color(0xFFFF5E5E),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    '฿',
+                    style: TextStyle(
+                      fontFamily: 'RoundedMplus1c',
+                      fontSize: 32,
+                      color: Color(0xFFFF5E5E),
+                    ),
+                  ),
+                ],
               ),
-            ),
+              const Text('สำหรับแมว S (1 CAT)', style: _subtitleStyle),
+            ],
+          ),
+
+          imageAssets: [
+            'assets/images/pomotion1.png',
+            'assets/images/pomotion2.png',
           ],
+
+          buttonText: 'จองเลย',
         ),
-        const SizedBox(height: 20),
-        const Text('สำหรับแมว S (1 CAT)', style: _subtitleStyle),
-        const SizedBox(height: 20),
-        CustomElevatedButton(
-          text: 'จองเลย',
-          fontWeight: FontWeight.bold,
-          backgroundColor: const Color(0xFFFF7B61FF),
-          onPressed: () {},
-          width: 196,
-          height: 50,
+
+        const SizedBox(height: 40),
+
+        // Promotion 2: อาบน้ำ + ตัดขน
+        PromotionItem(
+          titles: ['อาบน้ำ + ตัดขน วันนี้'],
+          priceWidget: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: Text('เพียงแค่', style: _subtitleStyle),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: const [
+                  Text(
+                    '500',
+                    style: TextStyle(
+                      fontFamily: 'PalanquinDark',
+                      fontSize: 40,
+                      color: Color(0xFFFF5E5E),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    '฿',
+                    style: TextStyle(
+                      fontFamily: 'RoundedMplus1c',
+                      fontSize: 40,
+                      color: Color(0xFFFF5E5E),
+                    ),
+                  ),
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Text('เท่านั้น !!!', style: _subtitleStyle),
+              ),
+            ],
+          ),
+          buttonText: 'จองเลย',
         ),
-        const SizedBox(height: 100),
-        Image.asset(
-          'assets/images/pomotion1.png',
-          width: MediaQuery.of(context).size.width * 0.8,
-        ),
-        const SizedBox(height: 28),
-        Image.asset(
-          'assets/images/pomotion2.png',
-          width: MediaQuery.of(context).size.width * 0.8,
-        ),
-        const SizedBox(height: 60),
-        const Text('อาบน้ำ + ตัดขน วันนี้ ', style: _titleStyle),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 18),
-              child: Text('เพียงแค่', style: _subtitleStyle),
-            ),
-            Transform.translate(
-              offset: const Offset(0, 8),
-              child: Image.asset('assets/images/price.png', height: 80),
-            ),
-            const Text('เท่านั้น !!!', style: _subtitleStyle),
-          ],
-        ),
-        CustomElevatedButton(
-          text: 'จองเลย',
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          backgroundColor: const Color(0xFFFF7B61FF),
-          onPressed: () {},
-          width: 196,
-          height: 50,
-        ),
-        Container(height: 140, color: Colors.white.withOpacity(0.3)),
+        const SizedBox(height: 40),
       ],
     );
   }
+}
 
-  Widget _buildCircleImageWithText(String imagePath, String label) {
+// Widget สำหรับ Feature Item
+class FeatureItem extends StatelessWidget {
+  final String imagePath;
+  final String label;
+
+  const FeatureItem({super.key, required this.imagePath, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
       child: ClipOval(
@@ -226,18 +259,58 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+// Widget สำหรับ Promotion Item
+class PromotionItem extends StatelessWidget {
+  final List<String>? imageAssets; // เพิ่มรองรับหลายรูป
+  final List<String>? titles; // รองรับหลายข้อความ
+  final String buttonText;
+  final Widget? priceWidget;
+
+  const PromotionItem({
+    super.key,
+    this.imageAssets,
+    this.titles,
+    required this.buttonText,
+    this.priceWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (titles != null)
+          for (var t in titles!) ...[Text(t, style: _titleStyle)],
+        if (priceWidget != null) ...[priceWidget!],
+        const SizedBox(height: 20),
+        CustomElevatedButton(
+          text: buttonText,
+          fontWeight: FontWeight.bold,
+          backgroundColor: const Color(0xFFFF7B61FF),
+          onPressed: () {},
+          width: 196,
+          height: 50,
+        ),
+        const SizedBox(height: 110),
+        if (imageAssets != null)
+          for (var img in imageAssets!) ...[
+            const SizedBox(height: 28),
+            Image.asset(img, width: MediaQuery.of(context).size.width * 0.8),
+          ],
+      ],
+    );
+  }
+}
+
 const _titleStyle = TextStyle(
-  fontSize: 24,
+  fontSize: 32,
   fontWeight: FontWeight.bold,
   color: Colors.black,
 );
-
 const _subtitleStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,
   color: Colors.black,
 );
-
 const _headerTextStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.bold,

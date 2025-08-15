@@ -18,10 +18,10 @@ class CustomDrawer extends StatelessWidget {
         
         break;
       case 'ห้องพัก':
-        targetPage = const RoomPage();
+        targetPage =  RoomPage();
         break;
       case 'บริการอื่นๆ':
-        targetPage = const ServicesPage();
+        targetPage =  ServicesPage();
         break;
       case 'แกลลอรี่และรีวิว':
         targetPage = const GalleryPage();
