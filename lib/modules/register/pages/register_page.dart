@@ -32,7 +32,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
@@ -179,7 +178,8 @@ class _RegisterPageState extends State<RegisterPage> {
       validatorMessage: 'Please enter a password',
       obscure: _obscurePassword,
       suffixIcon: _obscurePassword ? Icons.visibility_off : Icons.visibility,
-      onSuffixPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+      onSuffixPressed:
+          () => setState(() => _obscurePassword = !_obscurePassword),
     );
   }
 
@@ -190,8 +190,12 @@ class _RegisterPageState extends State<RegisterPage> {
       hint: 'Confirm your password',
       validatorMessage: 'Please confirm your password',
       obscure: _obscureConfirmPassword,
-      suffixIcon: _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
-      onSuffixPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+      suffixIcon:
+          _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+      onSuffixPressed:
+          () => setState(
+            () => _obscureConfirmPassword = !_obscureConfirmPassword,
+          ),
     );
   }
 
@@ -209,8 +213,9 @@ class _RegisterPageState extends State<RegisterPage> {
           _passwordController.clear();
           _confirmPasswordController.clear();
           setState(() => _selectedCountryCode = '+66');
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Register สำเร็จ!')));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Register สำเร็จ!')));
         }
       },
     );
@@ -220,11 +225,17 @@ class _RegisterPageState extends State<RegisterPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Have an Account?', style: TextStyle(color: Colors.black, fontSize: 12)),
+        const Text(
+          'Have an Account?',
+          style: TextStyle(color: Colors.black, fontSize: 12),
+        ),
         const SizedBox(width: 8),
         GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => LoginPage()),
+            );
           },
           child: const Text(
             'LOG IN',
@@ -255,12 +266,15 @@ class _RegisterPageState extends State<RegisterPage> {
           onChanged: (value) {
             if (value != null) setState(() => _selectedCountryCode = value);
           },
-          items: _countryCodes
-              .map((code) => DropdownMenuItem<String>(
-                    value: code,
-                    child: Text(code),
-                  ))
-              .toList(),
+          items:
+              _countryCodes
+                  .map(
+                    (code) => DropdownMenuItem<String>(
+                      value: code,
+                      child: Text(code),
+                    ),
+                  )
+                  .toList(),
         ),
       ),
     );
@@ -279,7 +293,10 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 4),
         CustomFormField(
           controller: controller,

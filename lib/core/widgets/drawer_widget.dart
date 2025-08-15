@@ -7,7 +7,9 @@ import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
 import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  final String currentPage; // เพิ่ม
+
+  const CustomDrawer({super.key, required this.currentPage});
 
   void _goToPage(BuildContext context, String pageName) {
     Widget targetPage;
@@ -15,13 +17,12 @@ class CustomDrawer extends StatelessWidget {
     switch (pageName) {
       case 'หน้าแรก':
         targetPage = HomePage();
-        
         break;
       case 'ห้องพัก':
-        targetPage =  RoomPage();
+        targetPage = RoomPage();
         break;
       case 'บริการอื่นๆ':
-        targetPage =  ServicesPage();
+        targetPage = ServicesPage();
         break;
       case 'แกลลอรี่และรีวิว':
         targetPage = const GalleryPage();
@@ -84,15 +85,21 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Widget _buildMenuItem(BuildContext context, String title) {
+    // ถ้า title == currentPage จะใช้สี #7B61FF
+    final bool isSelected = title == currentPage;
+    final Color textColor = isSelected ? Color(0xFF7B61FF) : Colors.black;
+
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
         textAlign: TextAlign.center,
       ),
       onTap: () {
         Navigator.pop(context); // ปิด drawer ก่อน
-        _goToPage(context, title); // ไปหน้าใหม่
+        if (!isSelected) {
+          _goToPage(context, title); // ไปหน้าใหม่
+        }
       },
     );
   }

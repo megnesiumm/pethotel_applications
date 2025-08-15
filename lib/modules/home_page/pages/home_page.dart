@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(currentPage: 'หน้าแรก'),
       appBar: CustomAppBar(
         avatarUrl: 'https://i.pravatar.cc/300',
         onMenuPressed: () => _scaffoldKey.currentState?.openDrawer(),

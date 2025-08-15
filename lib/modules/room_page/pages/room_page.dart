@@ -19,7 +19,7 @@ class _RoomPageState extends State<RoomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: CustomDrawer(currentPage: 'ห้องพัก',),
       appBar: CustomAppBar(
         avatarUrl: 'https://i.pravatar.cc/300',
         onMenuPressed: () {

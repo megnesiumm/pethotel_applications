@@ -84,7 +84,7 @@ class _ServicesPageState extends State<ServicesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const CustomDrawer(),
+      drawer: const CustomDrawer(currentPage: 'บริการอื่นๆ',),
       appBar: CustomAppBar(
         avatarUrl: 'https://i.pravatar.cc/300',
         onMenuPressed: () => _scaffoldKey.currentState?.openDrawer(),
