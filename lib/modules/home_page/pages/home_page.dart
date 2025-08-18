@@ -5,6 +5,8 @@ import 'package:petshop_applications/core/widgets/bottom_bar_widget.dart';
 import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }

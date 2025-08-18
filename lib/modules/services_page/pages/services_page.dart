@@ -25,7 +25,7 @@ class _ServicesPageState extends State<ServicesPage> {
   }) {
     return Column(
       children: [
-        // Title บนรูป
+      
         Container(
           width: 246,
           height: 56,
@@ -47,7 +47,7 @@ class _ServicesPageState extends State<ServicesPage> {
         ),
         const SizedBox(height: 12),
 
-        // รูป
+   
         Container(
           width: 273,
           height: 353,
@@ -62,8 +62,6 @@ class _ServicesPageState extends State<ServicesPage> {
         ),
 
         const SizedBox(height: 8),
-
-        // Checkbox + ข้อความขนาดเล็ก
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -150,7 +148,7 @@ class _ServicesPageState extends State<ServicesPage> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 40), // ระยะปลายก่อน BottomBar
+        const SizedBox(height: 40),
       ],
     );
   }

@@ -3,7 +3,6 @@ import 'package:petshop_applications/core/widgets/custom_elevated_button.dart';
 import 'package:petshop_applications/core/widgets/custom_form_field.dart';
 import 'package:petshop_applications/core/widgets/phone_input_format.dart';
 import 'package:petshop_applications/modules/login/pages/login_page.dart';
-import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -70,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         padding: const EdgeInsets.all(30),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // แก้ปัญหา RenderBox
+          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/images/Logocat.png', width: 150, height: 150),
             const SizedBox(height: 10),

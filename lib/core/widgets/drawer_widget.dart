@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:petshop_applications/modules/about_page/pages/about_page.dart';
-import 'package:petshop_applications/modules/detail_page/pages/detail_page.dart';
 import 'package:petshop_applications/modules/gallery_review_page/pages/gallery_page.dart';
 import 'package:petshop_applications/modules/home_page/pages/home_page.dart';
 import 'package:petshop_applications/modules/room_page/pages/room_page.dart';
 import 'package:petshop_applications/modules/services_page/pages/services_page.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final String currentPage; // เพิ่ม
+  final String currentPage;
 
   const CustomDrawer({super.key, required this.currentPage});
 
@@ -31,7 +30,10 @@ class CustomDrawer extends StatelessWidget {
         targetPage = const AboutPage();
         break;
       default:
-        targetPage = PageDetail();
+        targetPage = Scaffold(
+          appBar: AppBar(title: const Text('หน้าที่ไม่พบ')),
+          body: const Center(child: Text('หน้านี้ยังไม่มีข้อมูล')),
+        );
     }
 
     Navigator.push(
@@ -74,7 +76,7 @@ class CustomDrawer extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pop(context); // ปิด drawer
+                  Navigator.pop(context);
                 },
               ),
             ),
@@ -85,20 +87,23 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Widget _buildMenuItem(BuildContext context, String title) {
-    // ถ้า title == currentPage จะใช้สี #7B61FF
     final bool isSelected = title == currentPage;
     final Color textColor = isSelected ? Color(0xFF7B61FF) : Colors.black;
 
     return ListTile(
       title: Text(
         title,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: textColor,
+        ),
         textAlign: TextAlign.center,
       ),
       onTap: () {
-        Navigator.pop(context); // ปิด drawer ก่อน
+        Navigator.pop(context);
         if (!isSelected) {
-          _goToPage(context, title); // ไปหน้าใหม่
+          _goToPage(context, title);
         }
       },
     );

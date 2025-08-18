@@ -36,7 +36,7 @@ class _ImageSliderBoxState extends State<ImageSliderBox> {
       mainAxisSize: MainAxisSize.min,
       children: [
     GestureDetector(
-          onTap: _showNextImage,
+          onTap: _showPreviousImage,
           child: SvgPicture.asset(
             'assets/icons/arrow_back.svg',
             width: 24,

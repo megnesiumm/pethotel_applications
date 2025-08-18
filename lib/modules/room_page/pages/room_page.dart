@@ -6,7 +6,7 @@ import 'package:petshop_applications/core/widgets/drawer_widget.dart';
 import 'package:petshop_applications/core/widgets/image_slider.dart';
 
 class RoomPage extends StatefulWidget {
-  RoomPage({super.key});
+  const RoomPage({super.key});
 
   @override
   State<RoomPage> createState() => _RoomPageState();
